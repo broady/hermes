@@ -1,0 +1,20 @@
+message RawMessage {
+  int8 byte = 0;
+}
+
+message TextMessage {
+  repeated int8 msg = 0;
+}
+
+message CharacterMessage {
+  int8 letter = 0;
+}
+
+message FeedMessage {
+  int8 num_lines = 0;
+}
+
+RPC WriteRaw(RawMessage) = 0;
+RPC Println(TextMessage) = 1;
+RPC Print(CharacterMessage) = 2;
+RPC Feed(FeedMessage) = 3;
