@@ -31,9 +31,9 @@ class Printer():
     # Increase the font size.
     size = 25
     self.WriteRawBytes([29, 33, size, 10])
-    
+
     # Center
-    self.WriteRawBytes([0x1B, 0x61, 1) 
+    self.WriteRawBytes([0x1B, 0x61, 1])
 
     # Send the message.
     self.Print(msg)
@@ -43,9 +43,9 @@ class Printer():
 
     # Normal height
     self.WriteRawBytes([29, 33, 10, 10])
-    
+
     # Left align
-    self.WriteRawBytes([0x1B, 0x61, 0) 
+    self.WriteRawBytes([0x1B, 0x61, 0])
 
   def WriteRawByte(self, byte):
     input = shine.shine.RawMessage()
@@ -58,15 +58,13 @@ class Printer():
 
 def main():
   client = shine.Shine(
-      '/dev/tty.usbmodem621',  # Serial port.
+      '/dev/ttyACM0',  # Serial port.
       9600,                    # Baud rate.
       'hermes.shn')            # Protocol file.
 
   printer = Printer(client)
-  tasks_module = tasks_module.TasksModule(printer)
-
-  tasks_module.run()
+  tasks = tasks_module.TasksModule(printer)
+  tasks.run()
 
 if __name__ == '__main__':
   main()
-

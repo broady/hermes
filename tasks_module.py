@@ -3,6 +3,7 @@ import httplib2
 import logging
 import pprint
 import sys
+import unicodedata
 
 from apiclient.discovery import build
 from oauth2client.file import Storage
@@ -49,9 +50,12 @@ class TasksModule():
 
       response = service.tasks().list(tasklist=id).execute()
 
-      printer.PrintHeading("Tasks")
+      self.printer.PrintHeading("Tasks")
       for item in response['items']:
-        printer.Print(item['title'])
+        #print item['title']
+        title = unicodedata.normalize('NFKD', item['title']).encode('ascii',
+                                                                    'ignore')
+        self.printer.Print(title)
 
     except AccessTokenRefreshError:
       print ("The credentials have been revoked or expired, please re-run"
