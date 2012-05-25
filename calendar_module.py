@@ -55,6 +55,7 @@ class CalendarModule():
           timeMax = end).execute()['items']
 
       appointments = []
+
       for item in items:
         if not 'summary' in item:
           continue
@@ -63,9 +64,20 @@ class CalendarModule():
           parts = item['start']['dateTime'].split('+')
           time = datetime.datetime.strptime(parts[0], "%Y-%m-%dT%H:%M:%S")
           offset = int(parts[1][:2])
+        
+          text = item['summary']
+          if 'location' in item:
+            locations = item['location'].split(',')
+            for location in locations:
+              if 'SYD' in location:
+                text += ' ' + location.replace('SYD-PIR-', '') + ' '
+              elif 'talk' in location:
+                parts = location.split('/')
+                text += ' Bridge: ' + parts[-1] + ' '
+
           appointments.append(
             time.strftime("%H:%M") + ': ' +
-            item['summary'] +
+            text +
             '(' + item['creator']['displayName'] + ')')
 
       appointments.sort()
