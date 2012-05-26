@@ -12,9 +12,9 @@ int printer_TX_Pin = 3;
 Thermal printer(printer_RX_Pin, printer_TX_Pin, 19200);
 
 void setup() {
-  Shine.begin(9600);
-  printer.setSize('S');
-  printer.setPrintDensity(50);
+  Shine.begin(9600);  
+  // printer.setSize('S');
+  // printer.setPrintDensity(50);
 }
 
 void loop() {

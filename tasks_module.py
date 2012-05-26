@@ -56,6 +56,7 @@ class TasksModule():
         title = unicodedata.normalize('NFKD', item['title']).encode('ascii',
                                                                     'ignore')
         self.printer.Print(title)
+        self.printer.Print(" ")
 
     except AccessTokenRefreshError:
       print ("The credentials have been revoked or expired, please re-run"
