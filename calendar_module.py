@@ -52,7 +52,11 @@ class CalendarModule():
       items = service.events().list(
           calendarId = 'primary',
           timeMin = today,
-          timeMax = end).execute()['items']
+          timeMax = end).execute()
+
+      if not 'items' in items:
+        return
+      items = items['items']
 
       appointments = []
 
@@ -82,7 +86,7 @@ class CalendarModule():
 
       appointments.sort()
       for item in appointments:
-        print item
+        self.printer.Print(item)
 
     except AccessTokenRefreshError:
       print ("The credentials have been revoked or expired, please re-run"

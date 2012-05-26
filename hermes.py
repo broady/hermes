@@ -2,9 +2,11 @@
 # Author: James McGill (jmcgill@plexer.net)
 
 import shine
+import unicodedata
 import tasks_module
 import oncall_module
 import cl_module
+import calendar_module
 
 class Printer():
   def __init__(self, client):
@@ -21,6 +23,8 @@ class Printer():
     self.client.Print(input)
 
   def Print(self, msg):
+    if not msg.__class__ == ''.__class__:
+      msg = unicodedata.normalize('NFKD', msg).encode('ascii', 'ignore')
     input = shine.shine.TextMessage()
     for i in range(0, len(msg)):
       input.set_msg(i, msg[i])
@@ -69,7 +73,7 @@ class Printer():
   def SetLineHeight(self, height = 32):
     self.WriteRawBytes([27, 51, height])
 
-def Underline():
+def Underline(printer):
   # Center, Underline, Left align, with vertical spacing.
   printer.Print(" ")
   printer.WriteRawBytes([0x1B, 0x61, 1])
@@ -84,27 +88,29 @@ def main():
       'hermes.shn')            # Protocol file.
 
   printer = Printer(client)
-  # printer.WriteRawBytes([27, 61, 1])
-  # printer.WriteRawBytes([27, 55, 7, 80, 2])
-  # printer.Print("LOL")
 
   printer.ConfigureFor5V()
 
-  tasks = tasks_module.TasksModule(printer)
-  tasks.run()
+  #tasks = tasks_module.TasksModule(printer)
+  #tasks.run()
 
-  Underline()
+  #Underline(printer)
 
-  oncall = oncall_module.OnCallModule(
-      printer,
-      ["maps-api", "places-api", "spatial-data-api", "geo-tracking-api"],
-      "jmcgill")
-  oncall.run()
+  #oncall = oncall_module.OnCallModule(
+  #    printer,
+  #    ["maps-api", "places-api", "spatial-data-api", "geo-tracking-api"],
+  #    "jmcgill")
+  #oncall.run()
 
-  Underline()
+  #Underline(printer)
 
-  cl = cl_module.ClModule(None)
-  cl.run()
+  #cl = cl_module.ClModule(printer)
+  #cl.run()
+
+  #Underline(printer)
+
+  calendar = calendar_module.CalendarModule(printer)
+  calendar.run()
 
 if __name__ == '__main__':
   main()
